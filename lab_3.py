@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 def generate_and_plot(n, p, seed=None):
     """
-    Вычисляем грав в модели Эрдёша-Реньи
+    Вычисляем граф в модели Эрдёша-Реньи
     Параметры по заданному варианту n=42, p=0,65
     """
     G = nx.erdos_renyi_graph(n, p, seed=seed)
