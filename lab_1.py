@@ -1,7 +1,8 @@
 import heapq
 
-def dijkstra(graph, start):
+def dijkstra_with_paths(graph, start):
     distances = {vertex: float('inf') for vertex in graph}
+    previous = {vertex: None for vertex in graph}
     distances[start] = 0
     priority_queue = [(0, start)]
 
@@ -17,11 +18,22 @@ def dijkstra(graph, start):
 
             if distance < distances[neighbor]:
                 distances[neighbor] = distance
+                previous[neighbor] = current_vertex
                 heapq.heappush(priority_queue, (distance, neighbor))
 
-    return distances
+    paths = {}
+    for vertex in graph:
+        path = []
+        current = vertex
+        while current is not None:
+            path.append(current)
+            current = previous[current]
+        paths[vertex] = list(reversed(path))
 
-# Граф под который рассчитываем растояния
+    return distances, paths
+
+
+#Граф под который рассчитывасем расстояния
 graph = {
     'A': [('B', 5), ('C', 1)],
     'B': [('A', 5), ('C', 2), ('D', 1)],
@@ -32,8 +44,9 @@ graph = {
 }
 
 start_vertex = 'A'
-shortest_paths = dijkstra(graph, start_vertex)
+distances, paths = dijkstra_with_paths(graph, start_vertex)
 
 print(f"Кратчайшие пути от вершины {start_vertex}:")
-for vertex, distance in shortest_paths.items():
-    print(f"До {vertex}: {distance}")
+for vertex in graph:
+    path_str = " → ".join(paths[vertex])
+    print(f"До {vertex}: расстояние = {distances[vertex]}, путь = {path_str}")
